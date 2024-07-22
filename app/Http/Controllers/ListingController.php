@@ -9,7 +9,7 @@ class ListingController extends Controller
 {
     public function index(Request $request)
     {
-        return view('listings.index', ['gigs' => Listing::latest()->filter($request->all())->paginate(2)]);
+        return view('listings.index', ['gigs' => Listing::latest()->filter($request->all())->paginate(5)]);
     }
     public function show($id)
     {
@@ -35,6 +35,9 @@ class ListingController extends Controller
             'description' => 'required',
 
         ]);
+        if ($request->hasFile('logo')) {
+            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
         Listing::create($formFields);
         return redirect('/')->with('message', 'Listing created successfully!');
     }
