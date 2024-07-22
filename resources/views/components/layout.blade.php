@@ -11,5 +11,5 @@
         {{ $slot }}
     </div>
 </main>
-
+<x-flash-message/>
 <x-partials.footer />

@@ -1,27 +1,19 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use App\Models\Listing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('listings', ['gigs' => Listing::all()]);
-});
-
 Route::get(
-    '/listings/{id}',
-    function ($id) {
-        $listing = Listing::findOrFail($id);
-        return view('listing', [
-            'listing' => $listing,
-        ]);
-    }
+    '/',
+    [ListingController::class, 'index']
 );
 
+Route::get('/listings/create', [ListingController::class, 'create']);
+Route::post('/listings', [ListingController::class, 'store']);
 Route::get(
-    "/search",
-    function (Request $request) {
-        dd($request->name);
-    }
+    '/listings/{id}',
+    [ListingController::class, 'show']
 );
