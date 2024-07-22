@@ -9,7 +9,7 @@ class ListingController extends Controller
 {
     public function index(Request $request)
     {
-        return view('listings.index', ['gigs' => Listing::latest()->filter($request->all())->get()]);
+        return view('listings.index', ['gigs' => Listing::latest()->filter($request->all())->paginate(2)]);
     }
     public function show($id)
     {
