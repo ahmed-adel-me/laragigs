@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ListingController extends Controller
@@ -53,6 +54,10 @@ class ListingController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $listing = Listing::findOrFail($id);
+        if ($listing->user_id != auth()->id()) {
+            abort(403, 'Unauthorized Action');
+        }
         $formFields = $request->validate([
             'title' => 'required',
             'company' => 'required',
@@ -66,12 +71,19 @@ class ListingController extends Controller
         if ($request->hasFile('logo')) {
             $formFields['logo'] = $request->file('logo')->store('logos', 'public');
         }
-        Listing::where('id', $id)->update($formFields);
+        $listing->update($formFields);
         return back()->with('message', 'Listing updated successfully!');
     }
     public function destroy($id)
     {
         Listing::where('id', $id)->delete();
         return redirect('/')->with('message', 'Listing deleted successfully!');
+    }
+
+    public function manage()
+    {
+        $user = auth()->user();
+        $listings = $user->listings;
+        return view('listings.manage', ['listings' => $listings]);
     }
 }

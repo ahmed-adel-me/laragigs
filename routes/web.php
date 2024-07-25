@@ -13,6 +13,7 @@ Route::get(
     [ListingController::class, 'index']
 );
 
+Route::get('/listings/manage', [ListingController::class, 'manage'])->middleware(Authenticate::class);
 Route::get('/listings/create', [ListingController::class, 'create'])->middleware(Authenticate::class);
 Route::post('/listings', [ListingController::class, 'store'])->middleware(Authenticate::class);
 Route::get(
@@ -30,3 +31,4 @@ Route::post('/users/register', [UserController::class, 'store']);
 Route::get('/login', [UserController::class, 'login'])->middleware('guest');
 Route::post('/users/login', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware(Authenticate::class);
+
