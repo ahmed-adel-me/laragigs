@@ -39,14 +39,20 @@
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end gap-5 mt-2">
-                <a href="/listings/{{ $listing['id'] }}/edit" class="bg-blue-500 py-1 text-white px-3 rounded-md">Edit</a>
-                <form action="/listings/{{ $listing['id'] }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button class="text-white px-3 bg-red-600 py-1 rounded-md" type="submit">Delete</button>
-                </form>
-            </div>
+           
+            @auth
+                @if (auth()->id() === $listing['id'])
+                    <div class="flex justify-end gap-5 mt-2">
+                        <a href="/listings/{{ $listing['id'] }}/edit"
+                            class="bg-blue-500 py-1 text-white px-3 rounded-md">Edit</a>
+                        <form action="/listings/{{ $listing['id'] }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="text-white px-3 bg-red-600 py-1 rounded-md" type="submit">Delete</button>
+                        </form>
+                    </div>
+                @endif
+            @endauth
         </div>
     </main>
 
